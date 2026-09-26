@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    @apply bg-background text-textMain antialiased;
+  }
+}
+
+@layer utilities {
+  .bg-vignette {
+    background: radial-gradient(
+      ellipse at center,
+      transparent 25%,
+      rgba(10, 14, 20, 0.75) 100%
+    );
+  }
+
+  .text-glow {
+    text-shadow:
+      0 0 10px rgba(0, 229, 255, 0.6),
+      0 0 34px rgba(0, 229, 255, 0.4);
+  }
+
+  .glass-panel-translucent {
+    background: rgba(10, 14, 20, 0.45);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    border-radius: 0.25rem;
+    box-shadow:
+      0 0 24px rgba(0, 229, 255, 0.25),
+      inset 0 0 60px rgba(0, 229, 255, 0.08);
+  }
+
+  .glass-panel {
+    background: rgba(11, 17, 27, 0.65);
+    backdrop-filter: blur(14px) saturate(130%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    border-radius: 0.5rem;
+    box-shadow:
+      0 0 20px rgba(0, 229, 255, 0.12),
+      inset 0 0 40px rgba(0, 229, 255, 0.04);
+  }
+  
+  .glass-header {
+    background: rgba(8, 13, 19, 0.90);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 229, 255, 0.20);
+  }
+
+  .enter-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 2rem;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #F1F5F9;
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.65);
+    border-radius: 0.25rem;
+    box-shadow: 0 0 24px rgba(0, 229, 255, 0.25);
+    transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .enter-btn:hover {
+    background: rgba(0, 229, 255, 0.20);
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.55);
+    transform: translateY(-1px);
+  }
+
+  .ticker-wrap {
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      black 8%,
+      black 92%,
+      transparent 100%
+    );
+  }
+
+  .ticker-track {
+    display: inline-flex;
+    animation: ticker-scroll 40s linear infinite;
+  }
+
+  .ticker-text {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #94A3B8;
+  }
+
+  .animate-hero-entrance {
+    animation: heroEntrance 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes heroEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* React Flow customizations */
+.react-flow__node {
+  border-radius: 8px;
+}
+
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+
+.react-flow__controls {
+  @apply !bg-surface !border-border !shadow-md;
+}
+
+.react-flow__controls-button {
+  @apply !bg-surface !border-border !fill-textMain hover:!bg-surfaceHover;
+}
+
+.react-flow__attribution {
+  @apply !bg-transparent !text-textMuted/50;
+}
+
+/* ==========================================================================
+ * SENTINEL ROUTE TRANSITION ANIMATIONS
+ * Purposeful entrance/exit transition when switching into and out of Sentinel mode.
+ * ========================================================================== */
+
+@keyframes sentinelSweepBeam {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.85;
+  }
+  75% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateX(100%) skewX(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes sentinelRevealArrival {
+  0% {
+    opacity: 0.08;
+    transform: scale(0.97);
+    filter: blur(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes sentinelDepartExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: saturate(1) brightness(1);
+  }
+  100% {
+    /* Never fully transparent — the outer bg-background shell shows through
+       instead of the raw black body. 0.08 is visually imperceptible but
+       ensures no black frame between exit and entry. */
+    opacity: 0.08;
+    transform: scale(0.97);
+    filter: saturate(0.3) brightness(0.6);
+  }
+}
+
+.sentinel-sweep-beam {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(34, 211, 238, 0.04) 20%,
+    rgba(34, 211, 238, 0.45) 50%,
+    rgba(34, 211, 238, 0.04) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 60px rgba(34, 211, 238, 0.5);
+  animation: sentinelSweepBeam 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sentinel-page-enter {
+  animation: sentinelRevealArrival 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sentinel-page-exit {
+  animation: sentinelDepartExit 200ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sentinel-sweep-beam {
+    display: none !important;
+  }
+  .sentinel-page-enter {
+    animation: simpleFadeIn 100ms linear forwards !important;
+  }
+  .sentinel-page-exit {
+    animation: simpleFadeOut 100ms linear forwards !important;
+  }
+}
+
+@keyframes simpleFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes simpleFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
